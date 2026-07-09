@@ -9,6 +9,7 @@ project progresses.
 
 | | |
 |---|---|
+| **License** | [MIT](LICENSE) |
 | **Template engine** | Cookiecutter |
 | **Version** | see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md) |
 | **Pairs with** | terraform-infra-rules |
@@ -62,3 +63,9 @@ internals) differs.
 
 Scaffold fixes happen **here** — consumer stack repos pin a foundation release tag;
 do not patch harness or constitution files downstream by hand.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
