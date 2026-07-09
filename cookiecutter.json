@@ -1,0 +1,11 @@
+{
+  "stack_name": "my-infra-stack",
+  "stack_description": "Azure infrastructure stack",
+  "org_prefix": "ds",
+  "client": "acme",
+  "location": "westeurope",
+  "subscription_strategy": ["per-env", "single"],
+  "environments": "dev,stage,prod",
+  "ci_platform": ["github", "none"],
+  "github_org": "drivestream-lab"
+}

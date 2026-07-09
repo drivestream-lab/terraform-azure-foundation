@@ -1,0 +1,19 @@
+# Terraform runtime
+**/.terraform/
+*.tfplan
+plan.json
+crash.log
+
+# NEVER ignore .terraform.lock.hcl — it must be committed (provider-versioning.mdc §3)
+
+# State stays remote — except bootstrap/, whose local state is intentionally committed
+*.tfstate
+*.tfstate.backup
+!bootstrap/*.tfstate
+
+# Local overrides
+*.auto.tfvars
+override.tf
+override.tf.json
+
+.DS_Store

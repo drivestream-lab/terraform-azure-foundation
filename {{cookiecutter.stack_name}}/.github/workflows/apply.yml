@@ -1,0 +1,48 @@
+{% raw %}name: apply
+
+# The ONLY path to terraform apply (plan-apply-workflow.mdc §2).
+# Applies the plan freshly generated on main after merge; stage/prod GitHub
+# environments carry required-reviewer protection — that is the human gate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "environment to apply"
+        required: true
+        type: choice
+        options: [{% endraw %}__ENV_LIST_YAML__{% raw %}]
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency: apply-${{ inputs.env }}   # never two applies on one env
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}     # approval gate lives here
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive, ref: main }
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: "1.9.8", terraform_wrapper: false }
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_APPLY_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: plan (on main) then apply the saved plan
+        env:
+          ARM_USE_OIDC: "true"
+          ARM_CLIENT_ID: ${{ vars.AZURE_APPLY_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          make plan ENV=${{ inputs.env }}
+          cd envs/${{ inputs.env }} && terraform apply -input=false plan.tfplan
+      - name: apply summary
+        run: |
+          echo "## applied — ${{ inputs.env }} @ $(git rev-parse --short HEAD)" >> "$GITHUB_STEP_SUMMARY"
+{% endraw %}
