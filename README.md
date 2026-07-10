@@ -11,7 +11,7 @@ project progresses.
 |---|---|
 | **License** | [MIT](LICENSE) |
 | **Template engine** | Cookiecutter |
-| **Version** | see [`VERSION`](VERSION) (currently **0.1.2**) · [CHANGELOG](CHANGELOG.md) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.3**) · [CHANGELOG](CHANGELOG.md) |
 | **Pairs with** | terraform-infra-rules |
 | **Sibling (planned)** | terraform-aws-foundation — same shape, AWS-native content |
 

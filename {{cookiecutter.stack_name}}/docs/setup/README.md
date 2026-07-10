@@ -34,7 +34,7 @@ make setup
 
 ## Version managers
 
-Pin Terraform **1.9.8** (or the version in `.terraform-version`). Any of:
+Pin Terraform **1.9.8** (see `.terraform-version` and `.tool-versions` in the repo). With **asdf**, `cd` into the repo is enough if shims are on PATH.
 
 - **asdf** 0.16+ — shims in PATH only; no `asdf.sh` (see [macos.md](macos.md))
 - **tfenv**
