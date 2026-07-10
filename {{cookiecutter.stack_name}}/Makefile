@@ -7,7 +7,7 @@ ENVS := $(shell ls -d envs/*/ 2>/dev/null | xargs -n1 basename)
 .PHONY: setup check fmt-check validate lint scan test preflight plan clean
 
 setup: ## one-time: verify required tools are on PATH
-	@command -v terraform >/dev/null || { echo "[ERROR] missing: terraform"; exit 1; }
+	@command -v terraform >/dev/null || { echo "[ERROR] missing: terraform (see docs/setup/README.md)"; exit 1; }
 	@command -v tflint    >/dev/null || echo "note: tflint not installed — 'make check' will skip lint"
 	@command -v trivy     >/dev/null || echo "note: trivy not installed — 'make check' will skip scan"
 	@command -v conftest  >/dev/null || echo "note: conftest not installed — 'make plan' will skip policy gate"

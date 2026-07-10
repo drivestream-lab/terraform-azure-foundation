@@ -88,6 +88,6 @@ Next steps:
   make preflight ENV={ENVIRONMENTS[0]}
   make plan ENV={ENVIRONMENTS[0]}   # whoami plan succeeds = chassis proven live
 
-Components arrive via spec → ADR as the project progresses. See `modules/README.md`
-for seeded substrate contracts; wiring one into an env requires its accepted ADR.
+Components are added under `modules/` and `envs/` as your team implements them.
+See `modules/README.md` for substrate contract stubs.
 """)
