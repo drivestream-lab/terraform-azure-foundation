@@ -7,7 +7,7 @@
 
 Install tools first: **[docs/setup/README.md](docs/setup/README.md)** (macOS / Linux / WSL / Windows).
 
-Pin Terraform to the version in [`.terraform-version`](.terraform-version) (`~> 1.9.0`).
+Pin Terraform to the version in [`.terraform-version`](.terraform-version) / [`.tool-versions`](.tool-versions) (`~> 1.9.0`). With **asdf**, the generated `.tool-versions` selects 1.9.8 automatically.
 
 ## Is my setup fine? (day-one contract)
 

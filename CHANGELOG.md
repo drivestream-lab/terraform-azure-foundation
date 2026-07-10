@@ -4,6 +4,24 @@ All notable changes to `terraform-azure-foundation` are documented here.
 
 ---
 
+## v0.1.3
+
+### Summary
+
+Ship `.tool-versions` so asdf picks Terraform 1.9.8 without manual `asdf set`.
+
+### Changes
+
+- **Added** `.tool-versions` (`terraform 1.9.8`) alongside `.terraform-version`
+- **Docs** — setup README notes asdf reads `.tool-versions` on `cd`
+
+### Migration guide
+
+- Existing stacks: run `asdf set terraform 1.9.8` once, or add `.tool-versions` from v0.1.3 template
+- Regenerate or cherry-pick `.tool-versions` for new clones
+
+---
+
 ## v0.1.2
 
 ### Summary
