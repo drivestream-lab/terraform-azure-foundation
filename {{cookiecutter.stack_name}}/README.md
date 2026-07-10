@@ -1,10 +1,13 @@
 # {{ cookiecutter.stack_name }}
 
 {{ cookiecutter.stack_description }} — Azure infrastructure stack for
-**{{ cookiecutter.client }}**, scaffolded from terraform-azure-foundation.
+**{{ cookiecutter.client }}**, generated from terraform-azure-foundation.
 
-Constitution: `.cursor/rules/` (terraform-infra-rules git submodule — pin a release tag).
-Truth: `docs/specification/`.
+## Prerequisites
+
+Install tools first: **[docs/setup/README.md](docs/setup/README.md)** (macOS / Linux / WSL / Windows).
+
+Pin Terraform to the version in [`.terraform-version`](.terraform-version) (`~> 1.9.0`).
 
 ## Is my setup fine? (day-one contract)
 
@@ -15,8 +18,7 @@ Truth: `docs/specification/`.
 | 3 | `make plan ENV=dev` | Does the whole chain work end-to-end? | bootstrap done |
 
 Stage 3 plans **data sources only** (`whoami`) — proves backend, lock, RBAC, and
-provider with zero resources at stake. After `SETUP OK` + a green plan, add
-components via spec → ADR → module implementation.
+provider with zero resources at stake.
 
 ## First-time setup
 
@@ -24,22 +26,37 @@ components via spec → ADR → module implementation.
 make setup && make check                  # green immediately
 # once per client, by a subscription Owner:
 cd bootstrap && cp terraform.tfvars.example terraform.tfvars && terraform init && terraform apply
-terraform output github_setup             # wire GitHub environments (OIDC, no secrets)
+{% if cookiecutter.ci_platform == "github" -%}
+terraform output github_setup             # wire GitHub environments (OIDC)
+{% endif -%}
 cd .. && make preflight ENV=dev && make plan ENV=dev
 ```
 
+Wire `.cursor/rules/` (terraform-infra-rules submodule) and `docs/specification/`
+via your org harness when ready — not part of this accelerator.
+
 ## Layout
 
-```
-bootstrap/    once-per-client: state storage, CI identities, OIDC, RBAC (human-only)
-envs/<env>/   thin roots: backend + provider + naming + module calls — NO resources
-modules/      Azure substrate contracts; wired per ADR as the project progresses
-docs/specification/{product,adr,as-built}/
-scripts/preflight.sh   .github/workflows/{plan,apply}.yml   Makefile
+```text
+bootstrap/              once-per-client: state storage{% if cookiecutter.ci_platform == "github" %}, CI OIDC{% endif %}
+envs/<env>/             thin roots: backend + provider + naming + module calls
+modules/                substrate contracts (README stubs; wire per your ADRs)
+docs/setup/             tool install guides
+docs/specification/     product / adr / as-built (empty — populated by harness)
+scripts/preflight.sh    Makefile
+{% if cookiecutter.ci_platform == "github" -%}
+.github/workflows/      plan + apply (when ci_platform=github)
+{% endif -%}
 ```
 
-## Apply path
+## Makefile targets
 
-Agents and developers stop at plan. Merge → `apply` workflow → GitHub environment
-approval (stage/prod) → `terraform apply` of a plan generated on main. No other
-path exists; `bootstrap/` is the single documented exception.
+| Target | Purpose |
+|--------|---------|
+| `make setup` | Verify tools on PATH |
+| `make check` | Offline: fmt, validate, lint, scan |
+| `make test` | Module unit tests (`terraform test`) |
+| `make preflight ENV=<env>` | Azure creds + backend checks |
+| `make plan ENV=<env>` | Plan + optional policy gate |
+
+Apply workflow and governance: see `.cursor/rules/` and your harness — not defined in this scaffold.

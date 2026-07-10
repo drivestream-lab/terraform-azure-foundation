@@ -11,7 +11,7 @@ project progresses.
 |---|---|
 | **License** | [MIT](LICENSE) |
 | **Template engine** | Cookiecutter |
-| **Version** | see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.2**) · [CHANGELOG](CHANGELOG.md) |
 | **Pairs with** | terraform-infra-rules |
 | **Sibling (planned)** | terraform-aws-foundation — same shape, AWS-native content |
 
@@ -33,19 +33,22 @@ separately when using launchpad.
 ## What the chassis guarantees
 
 1. **Shape** — identical structure across every client stack (`envs/`, substrate
-   `modules/`, `docs/specification/`, Makefile verbs `check`/`test`/`preflight`/`plan`).
+   `modules/`, empty `docs/specification/`, `docs/setup/`, Makefile verbs).
 2. **Setup verification** — `bootstrap/` (once-per-client state + OIDC identities),
    `preflight`, and a data-source-only `whoami` plan as the end-to-end proof.
 3. **Substrate module contracts** — network, k8s, secrets, storage, observability,
-   postgres, redis (README stubs only; wired per ADR as the project progresses).
+   postgres, redis (README stubs only; wired when your team adds modules).
 4. **Guardrails wired** — plan-only CI credentials, gated apply workflow, policy
    gate hook (conftest against rules-repo policies when submodule is present).
+
+`docs/specification/` is **empty** in the scaffold — populate via harness. Tool install
+guides ship in `docs/setup/`.
 
 ## Usage
 
 ```bash
 pip install cookiecutter
-cookiecutter /path/to/terraform-azure-foundation --checkout v0.1.1
+cookiecutter /path/to/terraform-azure-foundation --checkout v0.1.2
 ```
 
 The post-gen hook expands one root per environment, derives state storage account
