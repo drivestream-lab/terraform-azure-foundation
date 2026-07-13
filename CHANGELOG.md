@@ -4,6 +4,28 @@ All notable changes to `terraform-azure-foundation` are documented here.
 
 ---
 
+## v0.1.4
+
+### Summary
+
+Idempotent re-scaffold — `apply-scaffold --force` can expand `envs/` again without
+manually deleting hook-generated environment roots.
+
+### Changes
+
+- **`post_gen_project` hook** — remove existing `envs/<env>/` before `copytree` from
+  `envs/_template/`; fail with a clear message if `_template` is missing
+- **Re-scaffold** — safe to re-run launchpad `apply-scaffold --repo <name> --apply --force`
+  when scaffold context changes (e.g. `org_prefix` / `client` naming fixes)
+
+### Migration guide
+
+- Bump scaffold `ref` to `v0.1.4` in `<client>-meta/config/scaffold-<org>.yaml`
+- Re-run `launchpad apply-scaffold --repo <iac-repo> --apply --force` — no manual
+  `rm -rf envs` required
+
+---
+
 ## v0.1.3
 
 ### Summary

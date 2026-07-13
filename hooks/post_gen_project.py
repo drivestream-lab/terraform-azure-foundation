@@ -35,8 +35,15 @@ def render(path: str, env: str) -> None:
 
 # ── expand envs/_template into one root per environment ──────────────────────
 template_dir = os.path.join("envs", "_template")
+if not os.path.isdir(template_dir):
+    raise SystemExit(
+        f"ERROR: missing {template_dir} — cookiecutter did not render the env template. "
+        "Re-run scaffold from a clean checkout or restore envs/_template from the foundation tag."
+    )
 for env in ENVIRONMENTS:
     env_dir = os.path.join("envs", env)
+    if os.path.isdir(env_dir):
+        shutil.rmtree(env_dir)
     shutil.copytree(template_dir, env_dir)
     for fname in os.listdir(env_dir):
         render(os.path.join(env_dir, fname), env)
